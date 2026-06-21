@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}ShopVerse — Modern Online Store{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <span class="hero-tag">New season collection</span>
+      <h1>Discover products you'll love</h1>
+      <p>Curated essentials across electronics, home, fitness, and more — delivered with a seamless checkout experience.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('products') }}" class="btn btn-primary">Browse Shop</a>
+        <a href="{{ url_for('products', category='Electronics') }}" class="btn btn-outline">Electronics</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <span>Free shipping</span>
+        <strong>On orders over $75</strong>
+      </div>
+      <div class="hero-card hero-card-accent">
+        <span>Secure checkout</span>
+        <strong>Fast &amp; simple</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Shop by category</h2>
+    </div>
+    <div class="category-grid">
+      {% for cat in categories %}
+        <a href="{{ url_for('products', category=cat.category) }}" class="category-chip">{{ cat.category }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-muted">
+  <div class="container">
+    <div class="section-header">
+      <h2>Featured products</h2>
+      <a href="{{ url_for('products') }}" class="link-arrow">View all</a>
+    </div>
+    <div class="product-grid">
+      {% for product in featured %}
+        {% include "partials/product_card.html" %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

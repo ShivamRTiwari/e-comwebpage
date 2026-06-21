@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ShopVerse{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="{{ url_for('index') }}" class="logo">ShopVerse</a>
+      <nav class="main-nav">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('products') }}">Shop</a>
+        {% if current_user %}
+          <a href="{{ url_for('orders') }}">My Orders</a>
+        {% endif %}
+      </nav>
+      <div class="header-actions">
+        <a href="{{ url_for('cart') }}" class="cart-link">
+          Cart
+          {% if cart_count > 0 %}
+            <span class="cart-badge">{{ cart_count }}</span>
+          {% endif %}
+        </a>
+        {% if current_user %}
+          <span class="user-greeting">Hi, {{ current_user }}</span>
+          <a href="{{ url_for('logout') }}" class="btn btn-ghost btn-sm">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="btn btn-ghost btn-sm">Login</a>
+          <a href="{{ url_for('register') }}" class="btn btn-primary btn-sm">Sign Up</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container container">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <strong>ShopVerse</strong>
+        <p>Quality products, fast checkout, simple shopping.</p>
+      </div>
+      <div class="footer-links">
+        <a href="{{ url_for('products') }}">All Products</a>
+        <a href="{{ url_for('cart') }}">Cart</a>
+        <a href="{{ url_for('checkout') }}">Checkout</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 ShopVerse. Built with Flask.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

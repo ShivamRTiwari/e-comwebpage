@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up — ShopVerse{% endblock %}
+
+{% block content %}
+<section class="section auth-section">
+  <div class="container">
+    <div class="auth-card">
+      <h1>Create account</h1>
+      <p>Join ShopVerse to save your order history.</p>
+      <form method="post" class="auth-form">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" minlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Log in</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Order Confirmed — ShopVerse{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container confirmation-box">
+    <div class="confirmation-icon">✓</div>
+    <h1>Thank you for your order!</h1>
+    <p>Order <strong>#{{ order.id }}</strong> has been placed successfully.</p>
+    <p>A confirmation will be sent to <strong>{{ order.customer_email }}</strong>.</p>
+
+    <div class="order-details">
+      <h3>Order Details</h3>
+      <p><strong>Ship to:</strong> {{ order.customer_name }}</p>
+      <p>{{ order.shipping_address }}</p>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in order_items %}
+            <tr>
+              <td>{{ item.product_name }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>${{ "%.2f"|format(item.unit_price * item.quantity) }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2"><strong>Total</strong></td>
+            <td><strong>${{ "%.2f"|format(order.total) }}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="confirmation-actions">
+      <a href="{{ url_for('products') }}" class="btn btn-primary">Continue Shopping</a>
+      {% if current_user %}
+        <a href="{{ url_for('orders') }}" class="btn btn-outline">View My Orders</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

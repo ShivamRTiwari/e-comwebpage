@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Cart — ShopVerse{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div class="container">
+    <h1>Shopping Cart</h1>
+    <p>Review your items before checkout.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if items %}
+      <div class="cart-layout">
+        <div class="cart-items">
+          {% for item in items %}
+            <div class="cart-item">
+              <img src="{{ item.product.image_url }}" alt="{{ item.product.name }}">
+              <div class="cart-item-info">
+                <h3><a href="{{ url_for('product_detail', product_id=item.product.id) }}">{{ item.product.name }}</a></h3>
+                <p>${{ "%.2f"|format(item.product.price) }} each</p>
+              </div>
+              <form action="{{ url_for('cart_update', product_id=item.product.id) }}" method="post" class="cart-qty-form">
+                <input type="number" name="quantity" value="{{ item.quantity }}" min="0" max="{{ item.product.stock }}">
+                <button type="submit" class="btn btn-ghost btn-sm">Update</button>
+              </form>
+              <div class="cart-item-subtotal">${{ "%.2f"|format(item.subtotal) }}</div>
+              <form action="{{ url_for('cart_remove', product_id=item.product.id) }}" method="post">
+                <button type="submit" class="btn btn-ghost btn-sm btn-danger-text">Remove</button>
+              </form>
+            </div>
+          {% endfor %}
+        </div>
+
+        <aside class="cart-summary">
+          <h3>Order Summary</h3>
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <strong>${{ "%.2f"|format(total) }}</strong>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <strong>{% if total >= 75 %}Free{% else %}$9.99{% endif %}</strong>
+          </div>
+          <div class="summary-row summary-total">
+            <span>Total</span>
+            <strong>${{ "%.2f"|format(total + (0 if total >= 75 else 9.99)) }}</strong>
+          </div>
+          <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-block">Proceed to Checkout</a>
+          <a href="{{ url_for('products') }}" class="btn btn-outline btn-block">Continue Shopping</a>
+        </aside>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <h3>Your cart is empty</h3>
+        <p>Add some products to get started.</p>
+        <a href="{{ url_for('products') }}" class="btn btn-primary">Start Shopping</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
